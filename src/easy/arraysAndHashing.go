@@ -34,18 +34,3 @@ func isAnagram(s string, t string) bool {
     return len(cmap) == 0
 }
 
-
-func twoSum(nums []int, target int) []int {
-    m := make(map[int]int)
-
-    for i, n := range nums {
-        ci, e := m[n]
-        if e {
-            return []int{ci, i}
-        }
-        m[target-n] = i
-    }
-
-    return []int{}
-}
-
