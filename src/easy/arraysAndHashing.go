@@ -1,9 +1,5 @@
 package easy
 
-import (
-	"sort"
-)
-
 func containsDuplicate(nums []int) bool {
     m := make(map[int]bool)
     for _, n := range nums {
@@ -53,87 +49,3 @@ func twoSum(nums []int, target int) []int {
     return []int{}
 }
 
-func GroupAnagrams(strs []string) [][]string {
-    m := make(map[string][]int)
-
-    for i, s := range strs {
-        sr := []rune(s)
-        sort.Slice(sr, func(i, j int) bool {
-            return sr[i] < sr[j]
-        })
-
-        ss := string(sr)
-        _, e := m[ss]
-        if e {
-            m[ss] = append(m[ss], i)
-            continue
-        }
-        m[ss] = []int{i}
-    }
-
-    rs := make([][]string, len(m))
-    i := 0
-    for _, anas := range m {
-        es := make([]string, len(anas))
-        for i, ai := range(anas) {
-            es[i] = strs[ai]
-        }
-        rs[i] = es
-        i++
-    }
-
-    return rs
-}
-
-func TopKFrequent(nums []int, k int) []int {
-    // vals -> freq
-    valfreq := make(map[int]int)
-    for _, n := range nums {
-        f, e := valfreq[n]
-        nf := 1
-        if e {
-            nf += f
-        }
-        valfreq[n] = nf
-    }
-
-    // freq -> vals
-    freqvals := make(map[int][]int)
-    maxFreq := 0
-    for v, f := range valfreq {
-        vals, e := freqvals[f]
-        if !e {
-            vals = make([]int, 0)
-        }
-        freqvals[f] = append(vals, v)
-        if f > maxFreq {
-            maxFreq = f
-        }
-    }
-
-    cnt := 0
-    rs := make([]int, k)
-    for f:=maxFreq; f>0; f-- {
-        vals, e := freqvals[f]
-        if e {
-            for _, v := range vals {
-                rs[cnt] = v
-                cnt ++
-                if cnt == k {
-                    return rs
-                }
-            }
-        }
-    }
-
-    return rs
-}
-
-func inList(nums []int, n int) bool {
-    for _, m := range nums {
-        if n == m {
-            return true
-        }
-    }
-    return false
-}
