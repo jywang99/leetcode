@@ -111,6 +111,7 @@ func ProductExceptSelf(nums []int) []int {
     return rs
 }
 
+// space complexity of O(n) except for the returned slice
 func ProductExceptSelfSpace(nums []int) []int {
     rs := make([]int, len(nums))
     rs[0] = 1
@@ -127,3 +128,70 @@ func ProductExceptSelfSpace(nums []int) []int {
 
     return rs
 }
+
+func IsValidSudoku(board [][]byte) bool {
+    rows := make([]map[byte]bool, 9)
+    cols := make([]map[byte]bool, 9)
+    squares := make([][]map[byte]bool, 3, 3)
+
+    for ri, row := range board {
+        for ci, c := range row {
+            if string(c) == "." {
+                continue
+            }
+
+            if rows[ri] == nil {
+                rows[ri] = make(map[byte]bool)
+            }
+            if rows[ri][c] {
+                return false
+            } else {
+                rows[ri][c] = true
+            }
+            if cols[ci] == nil {
+                cols[ci] = make(map[byte]bool)
+            }
+            if cols[ci][c] {
+                return false
+            } else {
+                cols[ci][c] = true
+            }
+
+            sri := ri / 3
+            sci := ci / 3
+            if squares[sri] == nil {
+                squares[sri] = make([]map[byte]bool, 3)
+            }
+            sqmap := squares[sri][sci]
+            if sqmap == nil {
+                squares[sri][sci] = make(map[byte]bool)
+            }
+            if sqmap[c] {
+                return false
+            } else {
+                squares[sri][sci][c] = true
+            }
+        }
+    }
+
+    return true
+}
+
+func LongestConsecutive(nums []int) int {
+    nmap := make(map[int]bool)
+    for _, n := range nums {
+        nmap[n] = true
+    }
+    ll := 0
+    for _, n := range nums {
+        if !nmap[n-1] {
+            l := 1
+            for i:=n+1; nmap[i]; i++ {
+                l++
+            }
+            ll = max(ll, l)
+        }
+    }
+    return ll
+}
+
