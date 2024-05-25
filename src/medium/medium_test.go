@@ -37,3 +37,21 @@ func TestIsValidSudoku(t *testing.T) {
     assert.True(t, medium.IsValidSudoku(board))
 }
 
+func TestTwoSum(t *testing.T) {
+    assert.Equal(t, []int{1,2}, medium.TwoSum([]int{2,7,11,15}, 9))
+    assert.Equal(t, []int{1,3}, medium.TwoSum([]int{2,3,4}, 6))
+    assert.Equal(t, []int{1,2}, medium.TwoSum([]int{-1,0}, -1))
+
+    assert.Equal(t, []int{1,2}, medium.TwoSumTwoPtr([]int{2,7,11,15}, 9))
+    assert.Equal(t, []int{1,3}, medium.TwoSumTwoPtr([]int{2,3,4}, 6))
+    assert.Equal(t, []int{1,2}, medium.TwoSumTwoPtr([]int{-1,0}, -1))
+}
+
+func TestThreeSum(t *testing.T) {
+    rs := medium.ThreeSum([]int{-1,0,1,2,-1,-4})
+    assert.Equal(t, 2, len(rs))
+    assert.Contains(t, rs, []int{-1,-1,2}, []int{-1,0,1})
+    rs = medium.ThreeSum([]int{0,0,0,0})
+    assert.Equal(t, 1, len(rs))
+    assert.Contains(t, rs, []int{0,0,0})
+}

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"jy.org/leetcode/src/easy"
 )
 
 func TestMap(t *testing.T) {
@@ -15,3 +16,7 @@ func TestMap(t *testing.T) {
     assert.Equal(t, 1, len(m))
 }
 
+func TestValidPalindrome(t *testing.T) {
+    assert.True(t, easy.IsPalindrome("A man, a plan, a canal: Panama"))
+    assert.False(t, easy.IsPalindrome("0P"))
+}
