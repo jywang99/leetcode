@@ -1,10 +1,7 @@
 package medium
 
 import (
-	"fmt"
 	"sort"
-	"strconv"
-	"strings"
 )
 
 // 167. Two Sum II - Input Array Is Sorted
@@ -42,42 +39,96 @@ func TwoSumTwoPtr(numbers []int, target int) []int {
 
 func ThreeSum(nums []int) [][]int {
     sort.Ints(nums)
-    p := nums[0]-1 // arbitrary
-    rsm := make(map[string]bool)
-    for i, n := range nums {
-        if n == p {
+    rs := make([][]int, 0)
+    ln := len(nums)
+    for i, n := range nums[:ln-2] {
+        // skip all duplicate for i
+        if i > 0 && n == nums[i-1] {
             continue
         }
-        p = n
+        // all possible j, k values are too big
+        if n + nums[i+1] + nums[i+2] > 0 {
+            break
+        }
+        // all possible j, k values are too small
+        if n + nums[ln-2] + nums[ln-1] < 0 {
+            continue
+        }
 
+        // double pointer two sum
         j := i+1
-        k := len(nums)-1
+        k := ln-1
         for j < k {
-            s := nums[i]+nums[j]+nums[k]
-            if s == 0 {
-                rsm[fmt.Sprintf("%v,%v,%v", nums[i], nums[j], nums[k])] = true
-                j++
-                continue
-            }
+            s := n + nums[j] + nums[k]
+            if s < 0 {
+                j ++
+            } 
             if s > 0 {
                 k --
-            } else {
-                j ++
+            }
+            if s == 0 {
+                rs = append(rs, []int{n, nums[j], nums[k]})
+                j, k = j+1, k-1
+                // skip all duplicates for j
+                for j<k && nums[j] == nums[j-1] {
+                    j++
+                }
+                // skip all duplicates for k
+                for k>j && nums[k] == nums[k+1] {
+                    k--
+                }
             }
         }
     }
-    rs := make([][]int, len(rsm))
-    ri := 0
-    for k := range rsm {
-        r := make([]int, 3)
-        sarr := strings.Split(k, ",")
-        for i, s := range sarr {
-            iv, _ := strconv.Atoi(s)
-            r[i] = iv
-        }
-        rs[ri] = r
-        ri ++
-    }
     return rs
+}
+
+// 11. Container With Most Water
+func MaxArea(height []int) int {
+    marea := 0
+    i := 0
+    j := len(height)-1
+    for i < j {
+        a := (j-i) * min(height[i], height[j])
+        marea = max(marea, a)
+        if height[i] < height[j] {
+            i++
+        } else {
+            j--
+        }
+    }
+    return marea
+}
+
+// 42. Trapping Rain Water
+func Trap(height []int) int {
+    total := 0
+    i := 0
+    j := len(height)-1
+    maxih := height[i] // max height on left side
+    maxjh := height[j] // max height on right side
+    for i < j {
+        var h int
+        var a int
+        if height[i] < height[j] {
+            i++
+            // fmt.Println("i++")
+            h = height[i]
+            a = maxih - h
+            maxih = max(maxih, h)
+        } else {
+            j--
+            // fmt.Println("j--")
+            h = height[j]
+            a = maxjh - h
+            maxjh = max(maxjh, h)
+        }
+
+        if a > 0 {
+            // fmt.Printf("i=%v, j=%v, maxih=%v, maxjh=%v, a=%v\n", i, j, maxih, maxjh, a)
+            total += a
+        }
+    }
+    return total
 }
 

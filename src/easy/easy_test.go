@@ -20,3 +20,13 @@ func TestValidPalindrome(t *testing.T) {
     assert.True(t, easy.IsPalindrome("A man, a plan, a canal: Panama"))
     assert.False(t, easy.IsPalindrome("0P"))
 }
+
+func TestValidParentheses(t *testing.T) {
+    assert.True(t, easy.IsValid("()"))
+    assert.True(t, easy.IsValid("()[]{}"))
+    assert.False(t, easy.IsValid("(]"))
+    assert.True(t, easy.IsValid("{[]}"))
+    assert.False(t, easy.IsValid("(("))
+    assert.False(t, easy.IsValid("){"))
+}
+
