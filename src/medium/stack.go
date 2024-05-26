@@ -1,6 +1,7 @@
 package medium
 
 import (
+	"sort"
 	"strconv"
 )
 
@@ -112,5 +113,85 @@ func DailyTemperatures(temperatures []int) []int {
         stk = append(stk, []int{t, i})
     }
     return rs
+}
+
+// 853. Car Fleet
+func CarFleet(target int, position []int, speed []int) int {
+    if len(position) == 1 {
+        return 1
+    }
+
+    // position -> time it takes to get to target without joining any fleet
+    tmap := make(map[int]float64)
+    for i, p := range position {
+        time := float64(target - p) / float64(speed[i])
+        tmap[p] = time
+    }
+    sort.Ints(position)
+
+    // positions
+    fleets := make([]int, 1)
+    // initialize with the closest car to target
+    fleets[0] = position[len(position)-1]
+    for i:=len(position)-2; i>=0; i-- {
+        ptime := tmap[fleets[len(fleets)-1]] // time that previous fleet arrives
+        if tmap[position[i]] <= ptime { // catches up, joins fleet
+            continue
+        }
+        // , doesn't catch up, forms new fleet
+        fleets = append(fleets, position[i])
+    }
+
+    return len(fleets)
+}
+
+// 84. Largest Rectangle in Histogram
+func LargestRectangleArea(heights []int) int {
+    type bar struct {
+        idx int // start idx of the height
+        height int
+    }
+    stk := make([]bar, 1)
+    stk[0] = bar{
+        idx: 0,
+        height: heights[0],
+    }
+    marea := 0
+    heights = append(heights, 0)
+    for i:=1; i<len(heights); i++ {
+        h := heights[i]
+        th := stk[len(stk)-1].height // height on stack top
+
+        // bar taller than stack top
+        if h > th {
+            // add current bar to stack
+            stk = append(stk, bar{
+                idx: i,
+                height: h,
+            })
+        }
+
+        // bar shorter than stack top
+        if h < th {
+            // pop until top of stack height = current height
+            var pidx int
+            for len(stk) > 0 && stk[len(stk)-1].height > h {
+                // pop
+                b := stk[len(stk)-1]
+                stk = stk[:len(stk)-1]
+                // calc area while popping, update marea
+                a := b.height*(i-b.idx)
+                marea = max(marea, a)
+                // keep track of last popped bar's idx
+                pidx = b.idx
+            }
+            // push new height to stack with starting idx = last popped
+            stk = append(stk, bar{
+                idx: pidx,
+                height: h,
+            })
+        }
+    }
+    return marea
 }
 
