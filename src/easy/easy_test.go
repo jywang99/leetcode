@@ -42,3 +42,11 @@ func TestBSearch(t *testing.T) {
     assert.Equal(t, -1, easy.SearchLoop(arr, 13))
     assert.Equal(t, 1, easy.SearchLoop([]int{2,5}, 5))
 }
+
+func TestMaxProfit(t *testing.T) {
+    assert.Equal(t, 5, easy.MaxProfit([]int{7,1,5,3,6,4}))
+    assert.Equal(t, 0, easy.MaxProfit([]int{7,6,4,3,1}))
+
+    assert.Equal(t, 5, easy.MaxProfitSliding([]int{7,1,5,3,6,4}))
+    assert.Equal(t, 0, easy.MaxProfitSliding([]int{7,6,4,3,1}))
+}

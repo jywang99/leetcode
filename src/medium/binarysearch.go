@@ -231,7 +231,3 @@ func (this *TimeMap) Get(key string, timestamp int) string {
     return ""
 }
 
-// 4. Median of Two Sorted Arrays
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-    m := int(math.Ceil(float64(len(nums1)) + float64(len(nums2))) / 2)
-}
