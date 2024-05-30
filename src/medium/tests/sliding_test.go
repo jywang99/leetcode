@@ -24,4 +24,16 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 func TestCharacterReplacement(t *testing.T) {
     assert.Equal(t, 4, m.CharacterReplacement("ABAB", 2))
     assert.Equal(t, 4, m.CharacterReplacement("AABABBA", 1))
+    assert.Equal(t, 4, m.CharacterReplacement("AAAA", 0))
+}
+
+func TestCheckInclusion(t *testing.T) {
+    assert.Equal(t, true, m.CheckInclusion("ab", "eidbaooo"))
+    assert.Equal(t, false, m.CheckInclusion("ab", "eidboaoo"))
+}
+
+func TestMinWindow(t *testing.T) {
+    assert.Equal(t, "BANC", m.MinWindow("ADOBECODEBANC", "ABC"))
+    assert.Equal(t, "a", m.MinWindow("a", "a"))
+    assert.Equal(t, "", m.MinWindow("a", "aa"))
 }

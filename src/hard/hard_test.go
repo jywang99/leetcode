@@ -18,3 +18,71 @@ func TestTrap(t *testing.T) {
     assert.Equal(t, 1, h.Trap([]int{5,4,1,2}))
 }
 
+func TestDequeue(t *testing.T) {
+    dq := h.NewDequeue(5)
+    dq.AppendTail(3)
+    dq.InsertHead(2)
+    dq.AppendTail(4)
+    dq.InsertHead(1)
+    dq.AppendTail(5)
+
+    assert.Equal(t, 5, dq.GetSize())
+
+    i, e := dq.GetHead()
+    assert.Nil(t, e)
+    assert.Equal(t, 1, i)
+
+    i, e = dq.GetTail()
+    assert.Nil(t, e)
+    assert.Equal(t, 5, i)
+
+    e = dq.AppendTail(5)
+    assert.NotNil(t, e)
+    e = dq.InsertHead(5)
+    assert.NotNil(t, e)
+    assert.Equal(t, 5, dq.GetSize())
+
+    i, e = dq.PopHead()
+    assert.Equal(t, 1, i)
+    assert.Equal(t, 4, dq.GetSize())
+
+    i, e = dq.GetHead()
+    assert.Equal(t, 2, i)
+
+    dq.InsertHead(6)
+    i, e = dq.GetHead()
+    assert.Equal(t, 6, i)
+    assert.Equal(t, 5, dq.GetSize())
+
+    i, e = dq.PopTail()
+    assert.Equal(t, 5, i)
+    assert.Equal(t, 4, dq.GetSize())
+    
+    i, e = dq.GetTail()
+    assert.Equal(t, 4, i)
+
+    dq.AppendTail(7)
+    i, e = dq.GetTail()
+    assert.Equal(t, 7, i)
+    assert.Equal(t, 5, dq.GetSize())
+
+    dq.PopTail()
+    dq.PopTail()
+    assert.Equal(t, 3, dq.GetSize())
+
+    dq.PopHead()
+    dq.PopHead()
+    assert.Equal(t, 1, dq.GetSize())
+
+    dq.PopTail()
+    assert.Equal(t, 0, dq.GetSize())
+}
+
+func TestMaxSlidingWindow(t *testing.T) {
+    // assert.Equal(t, []int{3,3,5,5,6,7}, h.MaxSlidingWindow([]int{1,3,-1,-3,5,3,6,7}, 3))
+    // assert.Equal(t, []int{1}, h.MaxSlidingWindow([]int{1}, 1))
+    // assert.Equal(t, []int{1,-1}, h.MaxSlidingWindow([]int{1,-1}, 1))
+    // assert.Equal(t, []int{7,4}, h.MaxSlidingWindow([]int{7,2,4}, 2))
+    assert.Equal(t, []int{3,3,2,5}, h.MaxSlidingWindow([]int{1,3,1,2,0,5}, 3))
+}
+

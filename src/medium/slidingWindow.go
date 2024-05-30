@@ -95,7 +95,6 @@ func CharacterReplacement(s string, k int) int {
         return n
     }
 
-    l, r, ml := 0, 1, 0
     fmap := make(map[rune]int)
     getMaxFreq := func() int {
         f := 0
@@ -104,16 +103,135 @@ func CharacterReplacement(s string, k int) int {
         }
         return f
     }
-    for r < n {
-        c := rs[r]
-        fmap[c] = fmap[c] + 1
+    l, ml := 0, 0
+    for r := range rs {
+        fmap[rs[r]] ++
         for (r-l+1) - getMaxFreq() > k {
             fmap[rs[l]] --
             l ++
         }
         ml = max(ml, r-l+1)
-        r ++
     }
 
     return ml
 }
+
+// 567. Permutation in String
+func CheckInclusion(s1 string, s2 string) bool {
+    n1, n2 := len(s1), len(s2)
+    if n1 > n2 {
+        return false
+    }
+
+    // maps to track character occurrences
+    pf := make([]int, 26)
+    cf := make([]int, 26)
+    isMatch := func() bool {
+        for i, f := range pf {
+            if f != cf[i] {
+                return false
+            }
+        }
+        return true
+    }
+
+    // init freq map for s1
+    for i := range s1 {
+        pf[s1[i] - 'a'] ++
+    }
+
+    // init freq map for first window
+    for i:=0; i<n1; i++ {
+        cf[s2[i] - 'a'] ++
+    }
+    // check first window
+    if isMatch() {
+        return true
+    }
+
+    l, r := 0, n1-1
+    for r < n2-1 {
+        // update current char map
+        cf[s2[l] - 'a'] --
+        l, r = l+1, r+1
+        cf[s2[r] - 'a'] ++
+
+        if isMatch() {
+            return true
+        }
+    }
+
+    return false
+}
+
+// 76. Minimum Window Substring
+func MinWindow(s string, t string) string {
+    rs, rt := []rune(s), []rune(t)
+    ns := len(rs)
+    if len(t) > ns {
+        return ""
+    }
+
+    // char occurrences
+    tmap := make(map[rune]int)
+    for _, c := range rt {
+        tmap[c] ++
+    }
+    need := len(tmap) // # of conditions to satisfy
+
+    // current window info
+    cmap := make(map[rune]int)
+    have := 0 // # of conditions met
+    addAndCheck := func(c rune) bool {
+        if tmap[c] == 0 { // no occurrence in pattern = ignore
+            return have == need
+        }
+        cmap[c] ++
+        if cmap[c] == tmap[c] { // have same # only after adding
+            have ++
+        }
+        return have == need
+    }
+    removeAndCheck := func(c rune) bool {
+        if tmap[c] == 0 { // no occurrence in pattern = ignore
+            return have == need
+        }
+        if cmap[c] == tmap[c] { // have same # before removing
+            have --
+        }
+        if cmap[c] > 0 {
+            cmap[c] --
+        }
+        return have == need
+    }
+
+    // result
+    ml, ms, mt := ns+1, -1, -1
+    updateResult := func(l, r int) {
+        nl := r-l+1
+        if ml > nl {
+            ml, ms, mt = nl, l, r
+        }
+    }
+    
+    l, r := 0, 0
+    for r < ns {
+        if addAndCheck(rs[r]) {
+            updateResult(l, r)
+            for ok := true; ok; {
+                l ++
+                ok = removeAndCheck(rs[l-1])
+                if ok {
+                    updateResult(l, r)
+                }
+            }
+        }
+        r ++
+    }
+
+    if ms == -1 {
+        return ""
+    }
+    return string(rs[ms:mt+1])
+}
+
