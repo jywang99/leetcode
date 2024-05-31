@@ -50,3 +50,20 @@ func TestMaxProfit(t *testing.T) {
     assert.Equal(t, 5, easy.MaxProfitSliding([]int{7,1,5,3,6,4}))
     assert.Equal(t, 0, easy.MaxProfitSliding([]int{7,6,4,3,1}))
 }
+
+func TestReverseList(t *testing.T) {
+    a := []int{1,2,3,4,5}
+    ll := easy.SliceToLinkedList(a)
+    assert.Equal(t, a, ll.ToSlice())
+
+    llr := easy.ReverseList(ll)
+    assert.Equal(t, []int{5,4,3,2,1}, llr.ToSlice())
+    assert.Equal(t, []int{2,1}, easy.ReverseList(easy.SliceToLinkedList([]int{1,2})).ToSlice())
+    assert.Equal(t, []int{}, easy.ReverseList(easy.SliceToLinkedList([]int{})).ToSlice())
+}
+
+func TestMergeTwoLists(t *testing.T) {
+    // assert.Equal(t, []int{1,1,2,3,4,4}, easy.MergeTwoLists(easy.SliceToLinkedList([]int{1,2,4}), easy.SliceToLinkedList([]int{1,3,4})).ToSlice())
+    // assert.Equal(t, []int{}, easy.MergeTwoLists(easy.SliceToLinkedList([]int{}), easy.SliceToLinkedList([]int{})).ToSlice())
+    assert.Equal(t, []int{0}, easy.MergeTwoLists(easy.SliceToLinkedList([]int{}), easy.SliceToLinkedList([]int{0})).ToSlice())
+}

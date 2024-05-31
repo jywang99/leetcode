@@ -69,56 +69,58 @@ func (dq *Dequeue) AppendTail(v int) error {
     return nil
 }
 
-func (dq *Dequeue) PopHead() (int, error) {
+func (dq *Dequeue) PopHead() *int {
     if dq.IsEmpty() {
-        return 0, errors.New("Dequeue is empty!")
+        return nil
     }
     v := dq.arr[dq.head]
     dq.size --
     if dq.size == 0 {
         dq.head = 0
         dq.tail = 0
-        return v, nil
+        return &v
     }
     if dq.head < len(dq.arr)-1 {
         dq.head ++
-        return v, nil
+        return &v
     }
     dq.head = 0
-    return v, nil
+    return &v
 }
 
-func (dq *Dequeue) PopTail() (int, error) {
+func (dq *Dequeue) PopTail() *int {
     if dq.IsEmpty() {
-        return 0, errors.New("Dequeue is empty!")
+        return nil
     }
     v := dq.arr[dq.tail]
     dq.size --
     if dq.size == 0 {
         dq.head = 0
         dq.tail = 0
-        return v, nil
+        return &v
     }
     if dq.tail > 0 {
         dq.tail --
-        return v, nil
+        return &v
     }
     dq.tail = len(dq.arr)-1
-    return v, nil
+    return &v
 }
 
-func (dq *Dequeue) GetHead() (int, error) {
+func (dq *Dequeue) GetHead() *int {
     if dq.IsEmpty() {
-        return 0, errors.New("Dequeue is empty!")
+        return nil
     }
-    return dq.arr[dq.head], nil
+    v := dq.arr[dq.head]
+    return &v
 }
 
-func (dq *Dequeue) GetTail() (int, error) {
+func (dq *Dequeue) GetTail() *int {
     if dq.IsEmpty() {
-        return 0, errors.New("Dequeue is empty!")
+        return nil
     }
-    return dq.arr[dq.tail], nil
+    v := dq.arr[dq.tail]
+    return &v
 }
 
 // 239. Sliding Window Maximum
@@ -126,34 +128,31 @@ func MaxSlidingWindow(nums []int, k int) []int {
     // monotonic decreasing queue for holding max values
     // values in decreasing order, but holding indices
     dq := NewDequeue(k+1)
+    // max in each window (answer)
     maxs := make([]int, len(nums)-k+1)
-    getHead := func() int {
-        i, e := dq.GetHead()
-        if e != nil {
-            panic(e)
-        }
-        return i
-    }
+    mi := 0
 
-    l, r, mi := 0, 0, 0
+    l, r := 0, 0
     for r < len(nums) {
         // remove old left
-        if !dq.IsEmpty() && l > getHead() {
+        if !dq.IsEmpty() && l > *dq.GetHead() {
             dq.PopHead()
         }
 
-        // pop all that are smaller than current value
-        for !dq.IsEmpty() && nums[getHead()] < nums[r] {
-            dq.PopHead()
+        // pop all that are smaller than current value, from tail
+        for !dq.IsEmpty() && nums[*dq.GetTail()] < nums[r] {
+            dq.PopTail()
         }
         // append current value
         dq.AppendTail(r)
 
         // when an entire window is covered
         if r+1 >= k {
-            maxs[mi] = nums[getHead()]
-            l ++
+            // max in the window
+            maxs[mi] = nums[*dq.GetHead()]
             mi ++
+            // slide window
+            l ++
         }
         r ++
     }
