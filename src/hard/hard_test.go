@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	com "jy.org/leetcode/src/common"
 	h "jy.org/leetcode/src/hard"
 )
 
@@ -20,7 +21,7 @@ func TestTrap(t *testing.T) {
 
 func TestDequeue(t *testing.T) {
     // construct
-    dq := h.NewDequeue(5)
+    dq := com.NewDequeue(5)
     dq.AppendTail(3)
     dq.InsertHead(2)
     dq.AppendTail(4)
@@ -28,7 +29,7 @@ func TestDequeue(t *testing.T) {
     dq.AppendTail(5)
 
     // get
-    assert.Equal(t, 5, dq.GetSize())
+    assert.Equal(t, 5, dq.Size())
     assert.Equal(t, 1, *dq.GetHead())
     assert.Equal(t, 5, *dq.GetTail())
 
@@ -37,42 +38,42 @@ func TestDequeue(t *testing.T) {
     assert.NotNil(t, e)
     e = dq.InsertHead(5)
     assert.NotNil(t, e)
-    assert.Equal(t, 5, dq.GetSize())
+    assert.Equal(t, 5, dq.Size())
 
     // pop head
     assert.Equal(t, 1, *dq.PopHead())
-    assert.Equal(t, 4, dq.GetSize())
+    assert.Equal(t, 4, dq.Size())
     assert.Equal(t, 2, *dq.GetHead())
 
     // insert head
     dq.InsertHead(6)
     assert.Equal(t, 6, *dq.GetHead())
-    assert.Equal(t, 5, dq.GetSize())
+    assert.Equal(t, 5, dq.Size())
 
     // pop tail
     assert.Equal(t, 5, *dq.PopTail())
-    assert.Equal(t, 4, dq.GetSize())
+    assert.Equal(t, 4, dq.Size())
     assert.Equal(t, 4, *dq.GetTail())
 
     // append tail
     dq.AppendTail(7)
     assert.Equal(t, 7, *dq.GetTail())
-    assert.Equal(t, 5, dq.GetSize())
+    assert.Equal(t, 5, dq.Size())
 
     // pop until size=0
     dq.PopTail()
     dq.PopTail()
-    assert.Equal(t, 3, dq.GetSize())
+    assert.Equal(t, 3, dq.Size())
     dq.PopHead()
     dq.PopHead()
-    assert.Equal(t, 1, dq.GetSize())
+    assert.Equal(t, 1, dq.Size())
     dq.PopTail()
-    assert.Equal(t, 0, dq.GetSize())
+    assert.Equal(t, 0, dq.Size())
 
     // add to empty queue
     dq.AppendTail(3)
     dq.InsertHead(2)
-    assert.Equal(t, 2, dq.GetSize())
+    assert.Equal(t, 2, dq.Size())
     assert.Equal(t, 2, *dq.GetHead())
     assert.Equal(t, 3, *dq.GetTail())
 }
