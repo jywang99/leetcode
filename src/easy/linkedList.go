@@ -1,34 +1,9 @@
 package easy
 
+import com "jy.org/leetcode/src/common"
+
 // 206. Reverse Linked List
-type ListNode struct {
-    Val int
-    Next *ListNode
-}
-
-func SliceToLinkedList(arr []int) *ListNode {
-    if len(arr) == 0 {
-        return nil
-    }
-    head := ListNode{
-        Val: arr[0],
-        Next: nil,
-    }
-    if len(arr) == 1 {
-        return &head
-    }
-    n := &head
-    for _, e := range arr[1:] {
-        n.Next = &ListNode{
-            Val: e,
-            Next: nil,
-        }
-        n = n.Next
-    }
-    return &head
-}
-
-func ReverseList(head *ListNode) *ListNode {
+func ReverseList(head *com.ListNode) *com.ListNode {
     if head == nil {
         return nil
     }
@@ -38,7 +13,7 @@ func ReverseList(head *ListNode) *ListNode {
     }
     n := p.Next
     p.Next = nil
-    var nn *ListNode
+    var nn *com.ListNode
     for n != nil {
         nn = n.Next
         n.Next = p
@@ -48,24 +23,23 @@ func ReverseList(head *ListNode) *ListNode {
     return p
 }
 
-func (head *ListNode) ToSlice() []int {
-    rs := make([]int, 0)
-    for n:=head; n!=nil; n=n.Next {
-        rs = append(rs, n.Val)
-    }
-    return rs
-}
-
 // 21. Merge Two Sorted Lists
-func MergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+func MergeTwoLists(list1 *com.ListNode, list2 *com.ListNode) *com.ListNode {
     n1 := list1
     n2 := list2
 
-    getNext := func() *ListNode { // TODO handle n1 or n2 or both nil cases
+    if n1 == nil {
+        return n2
+    }
+    if n2 == nil {
+        return n1
+    }
+
+    getNext := func() *com.ListNode {
         // get min node among the two linked lists
         // increment ptr for the ll selected
-        var n ListNode
-        if n2 == nil || n1.Val < n2.Val {
+        var n com.ListNode
+        if n1.Val < n2.Val {
             n = *n1
             n1 = n1.Next
         } else {
