@@ -1,6 +1,8 @@
 package easy
 
-import com "jy.org/leetcode/src/common"
+import (
+	com "jy.org/leetcode/src/common"
+)
 
 // 206. Reverse Linked List
 func ReverseList(head *com.ListNode) *com.ListNode {
@@ -67,3 +69,31 @@ func MergeTwoLists(list1 *com.ListNode, list2 *com.ListNode) *com.ListNode {
 
     return head
 }
+
+// 141. Linked List Cycle
+func HasCycle(head *com.ListNode) bool {
+    visited := make(map[*com.ListNode]bool)
+    for n:=head; n!=nil; n=n.Next {
+        if visited[n] {
+            return true
+        }
+        visited[n] = true
+    }
+    return false
+}
+
+func HasCycleCompact(head *com.ListNode) bool {
+    s, f := head, head
+    for f != nil {
+        s = s.Next
+        f = f.Next
+        if f != nil {
+            f = f.Next
+        }
+        if s == f && s != nil {
+            return true
+        }
+    }
+    return false
+}
+
