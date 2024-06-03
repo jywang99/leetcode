@@ -86,3 +86,24 @@ func TestMaxSlidingWindow(t *testing.T) {
     assert.Equal(t, []int{3,3,2,5}, h.MaxSlidingWindow([]int{1,3,1,2,0,5}, 3))
 }
 
+func TestMergeKLists(t *testing.T) {
+    assert.Equal(t, []int{}, h.MergeKLists([]*com.ListNode{}).ToSlice())
+    assert.Equal(t, []int{}, h.MergeKLists([]*com.ListNode{nil}).ToSlice())
+    assert.Equal(t, []int{1,1,2,3,4,4,5,6}, h.MergeKLists([]*com.ListNode{
+        com.SliceToLinkedList([]int{1,4,5}),
+        com.SliceToLinkedList([]int{1,3,4}),
+        com.SliceToLinkedList([]int{2,6}),
+    }).ToSlice())
+
+    assert.Equal(t, []int{}, h.MergeKListsFast([]*com.ListNode{}).ToSlice())
+    assert.Equal(t, []int{}, h.MergeKListsFast([]*com.ListNode{nil}).ToSlice())
+    assert.Equal(t, []int{1,1,2,3,4,4,5,6}, h.MergeKListsFast([]*com.ListNode{
+        com.SliceToLinkedList([]int{1,4,5}),
+        com.SliceToLinkedList([]int{1,3,4}),
+        com.SliceToLinkedList([]int{2,6}),
+    }).ToSlice())
+}
+
+func TestReverseKGroup(t *testing.T) {
+    assert.Equal(t, []int{3,2,1,4,5}, h.ReverseKGroup(com.SliceToLinkedList([]int{1,2,3,4,5}), 3).ToSlice())
+}
