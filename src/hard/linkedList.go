@@ -112,19 +112,23 @@ func ReverseKGroup(head *com.ListNode, k int) *com.ListNode {
             }
             kth = kth.Next
         }
-        // update nhead
+        // update next head
         nhead = kth.Next
 
         // reverse range
-        // nr := ptail
-        // for ; nr.Next!=nhead; nr=nn {
-        // }
-        // if ptail != nil {
-        //     ptail.Next = nr
-        // }
+        pn := ptail.Next
+        ntail := pn // first node in range will be the new tail for the range
+        nn := pn.Next
+        pn.Next = nhead
+        for tmp := new(com.ListNode); nn != nhead; nn = tmp {
+            tmp = nn.Next
+            nn.Next = pn
+            pn = nn
+        }
+        ptail.Next = pn // link with previous segment
 
-        // update ptail
-        ptail = kth
+        // update previous tail
+        ptail = ntail
     }
 
     return dummy.Next

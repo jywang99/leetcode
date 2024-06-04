@@ -67,3 +67,11 @@ func TestCarFleet(t *testing.T) {
     assert.Equal(t, 1, m.CarFleet(100, []int{0,2,4}, []int{4,2,1}))
     assert.Equal(t, 2, m.CarFleet(10, []int{6,8}, []int{3,2}))
 }
+
+func TestEncoding(t *testing.T) {
+    e := m.NewEncoder()
+    ss := []string{"neet","code","love","you"}
+    assert.Equal(t, ss, e.Decode(e.Encode(ss)))
+    ss = []string{"we","say",":","yes"}
+    assert.Equal(t, ss, e.Decode(e.Encode(ss)))
+}

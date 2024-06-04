@@ -2,8 +2,10 @@ package medium
 
 import (
 	"sort"
+	"strings"
 )
 
+// 49. Group Anagrams
 func GroupAnagrams(strs []string) [][]string {
     m := make(map[string][]int)
 
@@ -36,6 +38,7 @@ func GroupAnagrams(strs []string) [][]string {
     return rs
 }
 
+// 347. Top K Frequent Elements
 func TopKFrequent(nums []int, k int) []int {
     // vals -> freq
     valfreq := make(map[int]int)
@@ -80,6 +83,7 @@ func TopKFrequent(nums []int, k int) []int {
     return rs
 }
 
+// 238. Product of Array Except Self
 func ProductExceptSelf(nums []int) []int {
     pre := make([]int, len(nums))
     p := 1
@@ -129,6 +133,7 @@ func ProductExceptSelfSpace(nums []int) []int {
     return rs
 }
 
+// 36. Valid Sudoku
 func IsValidSudoku(board [][]byte) bool {
     rows := make([]map[byte]bool, 9)
     cols := make([]map[byte]bool, 9)
@@ -177,6 +182,7 @@ func IsValidSudoku(board [][]byte) bool {
     return true
 }
 
+// 128. Longest Consecutive Sequence
 func LongestConsecutive(nums []int) int {
     nmap := make(map[int]bool)
     for _, n := range nums {
@@ -195,3 +201,21 @@ func LongestConsecutive(nums []int) int {
     return ll
 }
 
+// 271. encode-and-decode-strings
+type Encoder struct {
+    sep byte
+}
+
+func NewEncoder() *Encoder {
+    return &Encoder{
+        sep: 0xFF,
+    }
+}
+
+func (e *Encoder) Encode(src []string) string {
+    return strings.Join(src, string(e.sep))
+}
+
+func (e *Encoder) Decode(src string) []string {
+    return strings.Split(src, string(e.sep))
+}

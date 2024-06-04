@@ -1,5 +1,6 @@
 package easy
 
+// 217. Contains Duplicate
 func containsDuplicate(nums []int) bool {
     m := make(map[int]bool)
     for _, n := range nums {
@@ -11,6 +12,7 @@ func containsDuplicate(nums []int) bool {
     return false
 }
 
+// 242. Valid Anagram
 func isAnagram(s string, t string) bool {
     if len(s) != len(t) {
         return false
@@ -32,5 +34,20 @@ func isAnagram(s string, t string) bool {
     }
 
     return len(cmap) == 0
+}
+
+// 1. Two Sum
+func twoSum(nums []int, target int) []int {
+    m := make(map[int]int)
+
+    for i, n := range nums {
+        ci, e := m[n]
+        if e {
+            return []int{ci, i}
+        }
+        m[target-n] = i
+    }
+
+    return []int{}
 }
 
