@@ -97,6 +97,27 @@ func SliceToLinkedListCycle(arr []int, pos int) *com.ListNode {
 }
 
 func TestInvertTree(t *testing.T) {
-    // assert.Equal(t, []int{4,7,2,9,6,3,1}, e.InvertTree(com.SliceToTree([]int{4,2,7,1,3,6,9})))
-    // assert.Equal(t, []int{2,1,3}, e.InvertTree(com.SliceToTree([]int{2,3,1})))
+    assert.Equal(t, []int{4,7,2,9,6,3,1}, e.InvertTree(com.SliceToTree([]int{4,2,7,1,3,6,9})).ToSlice())
+    assert.Equal(t, []int{2,1,3}, e.InvertTree(com.SliceToTree([]int{2,3,1})).ToSlice())
+    assert.Equal(t, []int{}, e.InvertTree(com.SliceToTree([]int{})).ToSlice())
 }
+
+func TestDiameterOfBinaryTree(t *testing.T) {
+    n := &com.TreeNode{
+        Val: 1,
+        Right: &com.TreeNode{
+            Val: 3,
+        },
+        Left: &com.TreeNode{
+            Val: 2,
+            Left: &com.TreeNode{
+                Val: 4,
+            },
+            Right: &com.TreeNode{
+                Val: 5,
+            },
+        },
+    }
+    assert.Equal(t, 3, e.DiameterOfBinaryTree(n))
+}
+

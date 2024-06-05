@@ -7,9 +7,8 @@ type TreeNode struct {
 }
 
 func SliceToTree(src []int) *TreeNode {
-    p := new(TreeNode)
     if len(src) == 0 {
-        return p
+        return nil
     }
 
     var toTree func(i int) *TreeNode
@@ -30,6 +29,9 @@ func SliceToTree(src []int) *TreeNode {
 }
 
 func (t *TreeNode) ToSlice() []int {
+    if t == nil {
+        return []int{}
+    }
     rs := make([]int, 0)
     lvl := make([]*TreeNode, 1)
     lvl[0] = t
