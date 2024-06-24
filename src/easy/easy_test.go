@@ -119,5 +119,68 @@ func TestDiameterOfBinaryTree(t *testing.T) {
         },
     }
     assert.Equal(t, 3, e.DiameterOfBinaryTree(n))
+
+    n = &com.TreeNode{
+        Val: 1,
+        Left: &com.TreeNode{
+            Val: 2,
+        },
+    }
+    assert.Equal(t, 1, e.DiameterOfBinaryTree(n))
 }
 
+func TestIsBalanced(t *testing.T) {
+    n := &com.TreeNode{
+        Val: 3,
+        Right: &com.TreeNode{
+            Val: 20,
+            Left: &com.TreeNode{
+                Val: 15,
+            },
+            Right: &com.TreeNode{
+                Val: 7,
+            },
+        },
+        Left: &com.TreeNode{
+            Val: 9,
+        },
+    }
+    assert.True(t, e.IsBalanced(n))
+
+    n = &com.TreeNode{
+        Val: 1,
+        Left: &com.TreeNode{
+            Val: 2,
+            Left: &com.TreeNode{
+                Val: 3,
+                Left: &com.TreeNode{
+                    Val: 4,
+                },
+                Right: &com.TreeNode{
+                    Val: 4,
+                },
+            },
+            Right: &com.TreeNode{
+                Val: 3,
+            },
+        },
+        Right: &com.TreeNode{
+            Val: 2,
+        },
+    }
+    assert.False(t, e.IsBalanced(n))
+
+    n = nil
+    assert.True(t, e.IsBalanced(n))
+
+    n = &com.TreeNode{
+        Val: 1,
+        Right: &com.TreeNode{
+            Val: 2,
+            Right: &com.TreeNode{
+                Val: 3,
+            },
+        },
+    }
+    assert.False(t, e.IsBalanced(n))
+}

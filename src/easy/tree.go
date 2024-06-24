@@ -1,6 +1,10 @@
 package easy
 
-import com "jy.org/leetcode/src/common"
+import (
+	"math"
+
+	com "jy.org/leetcode/src/common"
+)
 
 // 226. Invert Binary Tree
 func InvertTree(root *com.TreeNode) *com.TreeNode {
@@ -33,5 +37,60 @@ func MaxDepth(root *com.TreeNode) int {
 
 // 543. Diameter of Binary Tree
 func DiameterOfBinaryTree(root *com.TreeNode) int {
-    return 0
+    md := 0
+    var maxd func(*com.TreeNode) int
+    maxd = func(n *com.TreeNode) int {
+        if n == nil {
+            return 0
+        }
+        ld := maxd(n.Left)
+        rd := maxd(n.Right)
+        d := ld + rd
+        if md < d {
+            md = d
+        }
+        return max(ld, rd) + 1
+    }
+    maxd(root)
+    return md
 }
+
+// 110. Balanced Binary Tree
+func IsBalanced(root *com.TreeNode) bool {
+    var balRec func(*com.TreeNode) (bool, int)
+    balRec = func(n *com.TreeNode) (bool, int) {
+        if n == nil {
+            return true, 0
+        }
+
+        lb, lh := balRec(n.Left)
+        rb, rh := balRec(n.Right)
+
+        if !lb || !rb {
+            return false, 0
+        }
+
+        diff := int(math.Abs(float64(lh) - float64(rh)))
+        if diff > 1 {
+            return false, 0
+        }
+
+        return true, max(lh, rh) + 1
+    }
+    b, _ := balRec(root)
+    return b
+}
+
+// 100. Same Tree
+func isSameTree(p *com.TreeNode, q *com.TreeNode) bool {
+    if p == nil && q != nil || q == nil && p != nil {
+        return false
+    }
+
+    if p == nil && q == nil {
+        return true
+    }
+
+    return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right) && p.Val == q.Val
+}
+
