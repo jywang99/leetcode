@@ -94,3 +94,37 @@ func isSameTree(p *com.TreeNode, q *com.TreeNode) bool {
     return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right) && p.Val == q.Val
 }
 
+// 572. Subtree of Another Tree
+func isSubtree(root *com.TreeNode, subRoot *com.TreeNode) bool {
+    if subRoot == nil {
+        return true
+    }
+
+    var isSameTree func (*com.TreeNode, *com.TreeNode) bool
+    isSameTree = func(p, q *com.TreeNode) bool {
+        if p == nil && q != nil || q == nil && p != nil {
+            return false
+        }
+
+        if p == nil && q == nil {
+            return true
+        }
+
+        return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right) && p.Val == q.Val
+
+    }
+
+    var subRec func (*com.TreeNode) bool
+    subRec = func(rn *com.TreeNode) bool {
+        if rn == nil {
+            return false
+        }
+        if isSameTree(rn, subRoot) {
+            return true
+        }
+        return subRec(rn.Left) || subRec(rn.Right)
+    }
+
+    return subRec(root)
+}
+
