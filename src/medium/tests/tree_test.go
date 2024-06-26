@@ -44,3 +44,70 @@ func TestLevelOrder(t *testing.T) {
     assert.Equal(t, exp3, m.LevelOrder(n3))
 }
 
+func TestRightSideView(t *testing.T) {
+    n := &com.TreeNode{
+        Val: 1,
+        Left: &com.TreeNode{
+            Val: 2,
+            Right: &com.TreeNode{
+                Val: 5,
+            },
+        },
+        Right: &com.TreeNode{
+            Val: 3,
+            Right: &com.TreeNode{
+                Val: 4,
+            },
+        },
+    }
+    assert.Equal(t, []int{1,3,4}, m.RightSideView(n))
+
+    n1 := &com.TreeNode{
+        Val: 1,
+        Right: &com.TreeNode{
+            Val: 3,
+        },
+    }
+    assert.Equal(t, []int{1,3}, m.RightSideView(n1))
+
+    var n2 *com.TreeNode
+    assert.Equal(t, []int{}, m.RightSideView(n2))
+}
+
+func TestIsValidBST(t *testing.T) {
+    n := &com.TreeNode{
+        Val: 2,
+        Left: &com.TreeNode{
+            Val: 2,
+        },
+        Right: &com.TreeNode{
+            Val: 2,
+        },
+    }
+    assert.False(t, m.IsValidBST(n))
+
+    n1 := &com.TreeNode{
+        Val: 5,
+        Left: &com.TreeNode{
+            Val: 4,
+        },
+        Right: &com.TreeNode{
+            Val: 6,
+            Left: &com.TreeNode{
+                Val: 3,
+            },
+            Right: &com.TreeNode{
+                Val: 7,
+            },
+        },
+    }
+    assert.False(t, m.IsValidBST(n1))
+
+    n2 := &com.TreeNode{
+        Val: 1,
+        Left: &com.TreeNode{
+            Val: 1,
+        },
+    }
+    assert.False(t, m.IsValidBST(n2))
+}
