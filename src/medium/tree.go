@@ -142,3 +142,62 @@ func IsValidBST(root *com.TreeNode) bool {
     rs, _, _ := validRec(root)
     return rs
 }
+
+// 230. Kth Smallest Element in a BST
+func kthSmallest(root *com.TreeNode, k int) int {
+    var rs int
+    var kthRec func(*com.TreeNode, int) int
+    kthRec = func(n *com.TreeNode, kr int) int {
+        // nothing to visit
+        if n == nil {
+            return kr
+        }
+
+        // visit all on the left
+        if n.Left != nil && kr > 0 {
+            kr = kthRec(n.Left, kr)
+        }
+
+        // visit current
+        if kr > 0 {
+            kr --
+            rs = n.Val
+        }
+
+        // visit right
+        if n.Right != nil && kr > 0 {
+            kr = kthRec(n.Right, kr)
+        }
+
+        return kr
+    }
+    kthRec(root, k)
+    return rs
+}
+
+// 105. Construct Binary Tree from Preorder and Inorder Traversal
+func buildTree(preorder []int, inorder []int) *com.TreeNode {
+    if len(preorder) == 0 {
+        return nil
+    }
+
+    divide := func(pre[]int) int {
+        var hi int
+        for i, o := range inorder {
+            if o == pre[0] {
+                hi = i
+            }
+        }
+        return hi
+    }
+
+    var buildRec func([]int) *com.TreeNode
+    buildRec = func(pre []int) *com.TreeNode {
+        head := &com.TreeNode{
+            Val: pre[0],
+        }
+        return head
+    }
+
+    return buildRec(preorder)
+}
