@@ -115,3 +115,17 @@ func TestMaxPathSum(t *testing.T) {
     assert.Equal(t, 42, h.MaxPathSum(med.BuildTree([]int{-10,9,20,15,7}, []int{9,-10,15,20,7})))
     assert.Equal(t, -3, h.MaxPathSum(med.BuildTree([]int{-3}, []int{-3})))
 }
+
+func TestSerializeTree(t *testing.T) {
+    test := func(n *com.TreeNode) {
+        c := h.CodecConstructor()
+        s := c.Serialize(n)
+        assert.Equal(t, n, c.Deserialize(s))
+    }
+    n1 := med.BuildTree([]int{1,2,3,4,5}, []int{2,1,4,3,5})
+    test(n1)
+    n2 := med.BuildTree([]int{}, []int{})
+    test(n2)
+    n3 := med.BuildTree([]int{1,2,3,4,6,7,5}, []int{2,1,6,4,7,3,5})
+    test(n3)
+}
