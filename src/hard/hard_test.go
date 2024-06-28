@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	com "jy.org/leetcode/src/common"
 	h "jy.org/leetcode/src/hard"
+	med "jy.org/leetcode/src/medium"
 )
 
 func TestLargestRectangleArea(t *testing.T) {
@@ -107,4 +108,10 @@ func TestMergeKLists(t *testing.T) {
 func TestReverseKGroup(t *testing.T) {
     assert.Equal(t, []int{3,2,1,4,5}, h.ReverseKGroup(com.SliceToLinkedList([]int{1,2,3,4,5}), 3).ToSlice())
     assert.Equal(t, []int{2,1,4,3,5}, h.ReverseKGroup(com.SliceToLinkedList([]int{1,2,3,4,5}), 2).ToSlice())
+}
+
+func TestMaxPathSum(t *testing.T) {
+    assert.Equal(t, 6, h.MaxPathSum(med.BuildTree([]int{1,2,3}, []int{2,1,3})))
+    assert.Equal(t, 42, h.MaxPathSum(med.BuildTree([]int{-10,9,20,15,7}, []int{9,-10,15,20,7})))
+    assert.Equal(t, -3, h.MaxPathSum(med.BuildTree([]int{-3}, []int{-3})))
 }

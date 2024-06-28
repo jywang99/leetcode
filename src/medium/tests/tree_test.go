@@ -111,3 +111,22 @@ func TestIsValidBST(t *testing.T) {
     }
     assert.False(t, m.IsValidBST(n2))
 }
+
+func TestBuildTree(t *testing.T) {
+    r := &com.TreeNode{
+        Val: 3,
+        Left: &com.TreeNode{
+            Val: 9,
+        },
+        Right: &com.TreeNode{
+            Val: 20,
+            Left: &com.TreeNode{
+                Val: 15,
+            },
+            Right: &com.TreeNode{
+                Val: 7,
+            },
+        },
+    }
+    assert.Equal(t, r, m.BuildTree([]int{3,9,20,15,7}, []int{9,3,15,20,7}))
+}

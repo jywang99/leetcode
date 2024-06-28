@@ -176,28 +176,25 @@ func kthSmallest(root *com.TreeNode, k int) int {
 }
 
 // 105. Construct Binary Tree from Preorder and Inorder Traversal
-func buildTree(preorder []int, inorder []int) *com.TreeNode {
-    if len(preorder) == 0 {
+func BuildTree(preorder []int, inorder []int) *com.TreeNode {
+    if len(preorder) == 0 || len(inorder) == 0 {
         return nil
     }
 
-    divide := func(pre[]int) int {
-        var hi int
-        for i, o := range inorder {
-            if o == pre[0] {
-                hi = i
-            }
-        }
-        return hi
+    root := &com.TreeNode{
+        Val: preorder[0],
     }
 
-    var buildRec func([]int) *com.TreeNode
-    buildRec = func(pre []int) *com.TreeNode {
-        head := &com.TreeNode{
-            Val: pre[0],
+    var mid int
+    for i, v := range inorder {
+        if v == preorder[0] {
+            mid = i
+            break
         }
-        return head
     }
 
-    return buildRec(preorder)
+    root.Left = BuildTree(preorder[1:mid+1], inorder[:mid])
+    root.Right = BuildTree(preorder[mid+1:], inorder[mid+1:])
+
+    return root
 }
