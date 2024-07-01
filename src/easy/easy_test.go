@@ -184,3 +184,68 @@ func TestIsBalanced(t *testing.T) {
     }
     assert.False(t, e.IsBalanced(n))
 }
+
+func TestHeap(t *testing.T) {
+    // min heap
+    h := e.NewHeap([]int{5,6,1,3,2}, func(a, b int) int {
+        if a == b {
+            return 0
+        }
+        if a > b {
+            return 1
+        }
+        return -1
+    })
+    assert.Equal(t, 1, h.PopTop())
+    assert.Equal(t, 2, h.GetTop())
+    assert.Equal(t, 2, h.PopTop())
+    assert.Equal(t, 3, h.PopTop())
+    h.Insert(0)
+    assert.Equal(t, 0, h.PopTop())
+    h.Insert(2)
+    assert.Equal(t, 2, h.PopTop())
+    assert.Equal(t, 5, h.PopTop())
+
+    // max heap
+    h1 := e.NewHeap([]int{5,6,1,3,2}, func(a, b int) int {
+        if a == b {
+            return 0
+        }
+        if a > b {
+            return -1
+        }
+        return 1
+    })
+    assert.Equal(t, 6, h1.PopTop())
+    assert.Equal(t, 5, h1.GetTop())
+    assert.Equal(t, 5, h1.PopTop())
+    assert.Equal(t, 3, h1.PopTop())
+    h1.Insert(7)
+    assert.Equal(t, 7, h1.PopTop())
+    h1.Insert(4)
+    assert.Equal(t, 4, h1.PopTop())
+    assert.Equal(t, 2, h1.PopTop())
+}
+
+func TestKthLargest(t *testing.T) {
+    kl := e.KthConstructor(3, []int{4, 5, 8, 2})
+    assert.Equal(t, 4, kl.Add(3))
+    assert.Equal(t, 5, kl.Add(5))
+    assert.Equal(t, 5, kl.Add(10))
+    assert.Equal(t, 8, kl.Add(9))
+    assert.Equal(t, 8, kl.Add(4))
+
+    kl2 := e.KthConstructor(1, []int{})
+    assert.Equal(t, -3, kl2.Add(-3))
+    assert.Equal(t, -2, kl2.Add(-2))
+    assert.Equal(t, -2, kl2.Add(-4))
+    assert.Equal(t, 0, kl2.Add(0))
+    assert.Equal(t, 4, kl2.Add(4))
+
+    kl3 := e.KthConstructor(2, []int{0})
+    assert.Equal(t, -1, kl3.Add(-1))
+    assert.Equal(t, 0, kl3.Add(1))
+    assert.Equal(t, 0, kl3.Add(-2))
+    assert.Equal(t, 0, kl3.Add(-4))
+    assert.Equal(t, 1, kl3.Add(3))
+}
