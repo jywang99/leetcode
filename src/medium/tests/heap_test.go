@@ -58,3 +58,23 @@ func TestKClosest(t *testing.T) {
     )
 }
 
+func TestFindKthLargest(t *testing.T) {
+    assert.Equal(t, 3, m.FindKthLargest([]int{7,6,5,4,3,2,1}, 5))
+}
+
+func TestLeastInterval(t *testing.T) {
+    assert.Equal(t, 8, m.LeastInterval([]byte{'A','A','A','B','B','B'}, 2))
+    assert.Equal(t, 6, m.LeastInterval([]byte{'A','C','A','B','D','B'}, 1))
+}
+
+func TestTwitter(t *testing.T) {
+    twtr := m.TwitterConstructor()
+    twtr.PostTweet(1, 5) // User 1 posts a new tweet (id = 5).
+    assert.ElementsMatch(t, []int{5}, twtr.GetNewsFeed(1))  // User 1's news feed should return a list with 1 tweet id -> [5]. return [5]
+    twtr.Follow(1, 2)    // User 1 follows user 2.
+    twtr.PostTweet(2, 6) // User 2 posts a new tweet (id = 6).
+    assert.ElementsMatch(t, []int{6, 5}, twtr.GetNewsFeed(1))  // User 1's news feed should return a list with 2 tweet ids -> [6, 5]. Tweet id 6 should precede tweet id 5 because it is posted after tweet id 5.
+    twtr.Unfollow(1, 2)  // User 1 unfollows user 2.
+    assert.ElementsMatch(t, []int{5}, twtr.GetNewsFeed(1))  // User 1's news feed should return a list with 1 tweet id -> [5], since user 1 is no longer following user 2.
+}
+
