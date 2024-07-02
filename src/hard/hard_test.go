@@ -129,3 +129,39 @@ func TestSerializeTree(t *testing.T) {
     n3 := med.BuildTree([]int{1,2,3,4,6,7,5}, []int{2,1,6,4,7,3,5})
     test(n3)
 }
+
+func TestFindWords(t *testing.T) {
+    assert.ElementsMatch(t, h.FindWords([][]byte{
+        {'o','a','a','n'},
+        {'e','t','a','e'},
+        {'i','h','k','r'},
+        {'i','f','l','v'},
+    }, []string{"oath","pea","eat","rain"}), []string{"eat", "oath"})
+
+    assert.Equal(t, []string{}, h.FindWords([][]byte{
+        {'a', 'b'},
+        {'c', 'd'},
+    }, []string{"abcb"}))
+
+    rs := h.FindWords([][]byte{
+        {'o','a','b','n'},
+        {'o','t','a','e'},
+        {'a','h','k','r'},
+        {'a','f','l','v'},
+    }, []string{"oa","oaa"})
+    assert.ElementsMatch(t, rs, []string{"oa", "oaa"})
+
+    assert.Equal(t, []string{"a"}, h.FindWords([][]byte{
+        {'a', 'a'},
+    }, []string{"a"}))
+
+    assert.ElementsMatch(t, h.FindWords([][]byte{
+        {'a','b','c','e'},
+        {'x','x','c','d'},
+        {'x','x','b','a'},
+    }, []string{"abc","abcd"}), []string{"abc", "abcd"})
+
+    assert.Equal(t, []string{}, h.FindWords([][]byte{
+        {'a', 'a'},
+    }, []string{"aaa"}))
+}

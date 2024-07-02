@@ -1,6 +1,8 @@
 package medium
 
-import "math"
+import (
+	"math"
+)
 
 type Heap[T any] struct {
     arr *[]T
@@ -16,14 +18,10 @@ func NewHeap[T any](arr []T, cmp func(T, T) int) *Heap[T] {
     }
 
     for i:=len(arr)-1; i>=0; i-- {
-        hp.heapify(0)
+        hp.heapify(i)
     }
 
     return hp
-}
-
-func (hp *Heap[T]) GetArr() []T {
-    return *hp.arr
 }
 
 func (hp *Heap[T]) swap(i, j int) {
@@ -65,8 +63,10 @@ func (hp *Heap[T]) Insert(val T) {
 }
 
 func (hp *Heap[T]) PopTop() T {
+    l := hp.GetSize()
+
     // no element in heap
-    if hp.GetSize() == 0 {
+    if l == 0 {
         return *new(T)
     }
 
@@ -74,12 +74,12 @@ func (hp *Heap[T]) PopTop() T {
     res := (*hp.arr)[0]
 
     // last element
-    if len(*hp.arr) == 1 {
+    if l == 1 {
         *hp.arr = []T{}
+        return res
     }
 
     // put last element at top, and heapify
-    l := len(*hp.arr)
     (*hp.arr)[0] = (*hp.arr)[l-1]
     *hp.arr = (*hp.arr)[:l-1]
     hp.heapify(0)
@@ -97,20 +97,23 @@ func (hp *Heap[T]) GetSize() int {
 
 func KClosest(points [][]int, k int) [][]int {
     getDst := func(p []int) float64 {
-        return float64(math.Sqrt(float64(p[0]*p[0] + p[1]*p[1])))
+        fx := float64(p[0])
+        fy := float64(p[1])
+        return float64(math.Sqrt(math.Pow(fx, 2) + math.Pow(fy, 2)))
     }
 
     hp := NewHeap(points, func(pa, pb []int) int {
         ad, bd := getDst(pa), getDst(pb)
         if ad > bd {
-            return 1
+            return -1
         }
-        return -1
+        return 1
     })
 
-    for hp.GetSize() > k {
-        hp.PopTop()
+    res := make([][]int, 0)
+    for i:=0; i<k; i++ {
+        res = append(res, hp.PopTop())
     }
 
-    return hp.GetArr()
+    return res
 }
