@@ -205,32 +205,131 @@ func LeastInterval(tasks []byte, n int) int {
 }
 
 // 355. Design Twitter
-type Twitter struct {
-    
+type tweet struct {
+    id int
+    tstamp int
 }
 
+type Twitter struct {
+    userPosts map[int][]tweet
+    userFollows map[int]map[int]bool
+    numTweets int
+    time int
+}
 
 func TwitterConstructor() Twitter {
-    
+    return Twitter{
+        userPosts: make(map[int][]tweet),
+        userFollows: make(map[int]map[int]bool),
+        numTweets: 10,
+        time: 0,
+    }
 }
 
+// user always follows himself
+func (this *Twitter) followSelf(userId int)  {
+    if this.userFollows[userId] == nil {
+        ff := make(map[int]bool)
+        this.userFollows[userId] = ff
+    }
+    this.userFollows[userId][userId] = true
+}
 
 func (this *Twitter) PostTweet(userId int, tweetId int)  {
-    
-}
+    this.followSelf(userId)
 
+    tweets, e := this.userPosts[userId]
+    if !e {
+        tweets = make([]tweet, 0)
+    }
+    tweets = append(tweets, tweet{
+        id: tweetId,
+        tstamp: this.time,
+    })
+    this.userPosts[userId] = tweets
+    this.time ++
+}
 
 func (this *Twitter) GetNewsFeed(userId int) []int {
-    
-}
+    type post struct {
+        userId int
+        postId int
+        idx int
+        tstamp int
+    }
 
+    // get one latest post for each user this user follows, and himself
+    ffs := this.userFollows[userId]
+    latest := make([]post, 0)
+    for fuid, fol := range ffs {
+        if !fol {
+            continue
+        }
+        posts := this.userPosts[fuid]
+        lidx := len(posts)-1
+        if lidx < 0 {
+            continue
+        }
+        p := posts[lidx]
+        latest = append(latest, post{
+            userId: fuid,
+            postId: p.id,
+            tstamp: p.tstamp,
+            idx: lidx,
+        })
+    }
+
+    hp := NewHeap(latest, func(a, b post) int {
+        if a.tstamp == b.tstamp {
+            return 0
+        }
+        if a.tstamp > b.tstamp {
+            return 1
+        }
+        return -1
+    })
+
+    res := make([]int, 0, this.numTweets)
+    
+    for i:=0; i<this.numTweets && hp.GetSize()>0; i++ {
+        // latest = heap top
+        p := hp.PopTop()
+        res = append(res, p.postId)
+
+        // add next latest post from the same user
+        nidx := p.idx - 1
+        // that was the last one
+        if nidx < 0 {
+            continue
+        }
+        np := this.userPosts[p.userId][nidx]
+        p = post{
+            userId: p.userId,
+            postId: np.id,
+            tstamp: np.tstamp,
+            idx: nidx,
+        }
+        hp.Insert(p)
+    }
+
+    return res
+}
 
 func (this *Twitter) Follow(followerId int, followeeId int)  {
-    
+    this.followSelf(followerId)
+
+    ffs, e := this.userFollows[followerId]
+    if !e {
+        ffs = make(map[int]bool)
+    }
+    ffs[followeeId] = true
+    this.userFollows[followerId] = ffs
 }
 
-
 func (this *Twitter) Unfollow(followerId int, followeeId int)  {
-    
+    if _, e := this.userFollows[followerId]; !e {
+        return
+    }
+    this.userFollows[followerId][followeeId] = false
 }
 

@@ -165,3 +165,13 @@ func TestFindWords(t *testing.T) {
         {'a', 'a'},
     }, []string{"aaa"}))
 }
+
+func TestMedianFinder(t *testing.T) {
+    mf := h.MfConstructor()
+    mf.AddNum(1)    // arr = [1]
+    mf.AddNum(2)    // arr = [1, 2]
+    assert.Equal(t, 1.5, mf.FindMedian()) // return 1.5 (i.e., (1 + 2) / 2)
+    mf.AddNum(3)    // arr[1, 2, 3]
+    assert.Equal(t, 2.0, mf.FindMedian()) // return 2.0
+}
+
