@@ -79,3 +79,59 @@ func Quicksort[T any](arr *[]T, cmpVal func(T, T) int) {
     sort(0, len(ar))
 }
 
+// 435. Non-overlapping Intervals
+func eraseOverlapIntervals(intervals [][]int) int {
+    Quicksort(&intervals, func(a, b []int) int {
+        return a[0] - b[0]
+    })
+
+    cnt := 0
+    lend := intervals[0][1]
+    for _, intv := range intervals[1:] {
+        // no overlap
+        if intv[0] >= lend {
+            lend = intv[1]
+            continue
+        }
+        // overlap
+        cnt ++
+        // remove one, keep the one that ends first
+        if intv[1] < lend {
+            lend = intv[1]
+        }
+    }
+
+    return cnt
+}
+
+// 253. Meeting Rooms II
+func MinMeetingRooms(intervals [][]int) int {
+    times := make([]int, 0, 2*len(intervals))
+    start := make(map[int]bool)
+    for _, intv := range intervals {
+        s, e := intv[0], intv[1]
+        times = append(times, s)
+        times = append(times, e)
+        start[s] = true
+        start[e] = false
+    }
+    Quicksort(&times, func(a, b int) int {
+        return a - b
+    })
+
+    mo := 1
+    co := 0
+    for _, t := range times {
+        // end of meeting
+        if !start[t] {
+            co --
+            continue
+        }
+        // start of meeting
+        co ++
+        mo = max(mo, co)
+    }
+
+    return mo
+}
+

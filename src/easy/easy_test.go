@@ -249,3 +249,9 @@ func TestKthLargest(t *testing.T) {
     assert.Equal(t, 0, kl3.Add(-4))
     assert.Equal(t, 1, kl3.Add(3))
 }
+
+func TestCanAttendMeetings(t *testing.T) {
+    assert.Equal(t, false, e.CanAttendMeetings([][]int{{0,30}, {5,10}, {15,20}}))
+    assert.Equal(t, true, e.CanAttendMeetings([][]int{{5,8}, {9,15}}))
+}
+

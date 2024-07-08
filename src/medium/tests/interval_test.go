@@ -25,3 +25,8 @@ func TestQuicksort(t *testing.T) {
     assert.Equal(t, []int{1,2,3,4,5,6}, arr)
 }
 
+func TestMinMeetingRooms(t *testing.T) {
+    assert.Equal(t, 2, m.MinMeetingRooms([][]int{{0,40},{5,10},{15,20}}))
+    assert.Equal(t, 1, m.MinMeetingRooms([][]int{{4,9}}))
+}
+

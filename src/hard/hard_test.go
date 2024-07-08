@@ -217,3 +217,7 @@ func TestMedianFinder(t *testing.T) {
     assert.Equal(t, 2.0, mf.FindMedian()) // return 2.0
 }
 
+func TestMinInterval(t *testing.T) {
+    assert.Equal(t, []int{3,3,1,4}, h.MinInterval([][]int{{1,4},{2,4},{3,6},{4,4}}, []int{2,3,4,5}))
+}
+
