@@ -1,35 +1,35 @@
 package hard
 
+import "slices"
+
 // 1851. Minimum Interval to Include Each Query
 func MinInterval(intervals [][]int, queries []int) []int {
-    cmpRange := func(a, b []int) int {
-        sd := a[0] - b[0] // len of interval
-        if sd != 0 {
-            return sd
-        }
-        return a[1] - b[1] // end pos of interval
-    }
-    quicksort(&intervals, cmpRange)
-    res := make([]int, len(queries))
-    qmap := make(map[int]int)
-    for i, q := range queries {
-        qmap[q] = i
-    }
-    quicksort(&queries, func(a, b int) int {
+    slices.SortFunc(intervals, func(a, b []int) int {
+        return a[0] - b[0]
+    })
+    sq := slices.Clone(queries)
+    slices.SortFunc(sq, func(a, b int) int {
         return a - b
     })
 
-    hp := NewHeap([][]int{}, cmpRange)
-    for _, q := range queries {
-        // push all intervals that caontain current point into heap
-        for _, intv := range intervals {
-            if q < intv[0] || q > intv[1] {
-                break
-            }
+    hp := NewHeap([][]int{}, func(a, b []int) int {
+        sd := b[0] - a[0] // len of interval, shorter = top
+        if sd != 0 {
+            return sd
+        }
+        return b[1] - a[1] // end pos of interval, earlier = top
+    })
+    i := 0
+    resMap := make(map[int]int)
+    for _, q := range sq {
+        // push all intervals that start before/at q into heap
+        for i < len(intervals) && intervals[i][0] <= q {
+            intv := intervals[i]
             hp.Insert([]int{
                 intv[1] - intv[0] + 1, // len of interval
                 intv[1], // end pos of interval
             })
+            i ++
         }
 
         // pop all intervals that are too far left
@@ -39,19 +39,23 @@ func MinInterval(intervals [][]int, queries []int) []int {
 
         // shortest remaining interval is the result for this query
         if hp.Len() > 0 {
-            res[qmap[q]] = hp.GetTop()[0]
+            resMap[q] = hp.GetTop()[0]
         } else {
-            res[qmap[q]] = -1
+            resMap[q] = -1
         }
+    }
+
+    res := make([]int, len(queries))
+    for i, v := range queries {
+        res[i] = resMap[v]
     }
 
     return res
 }
 
-func quicksort[T any](arr *[]T, cmpVal func(T, T) int) {
-    ar := *arr
+func quicksort[T any](arr []T, cmpVal func(T, T) int) []T {
     cmp := func(a, b int) int {
-        return cmpVal(ar[a], ar[b])
+        return cmpVal(arr[a], arr[b])
     }
 
     var sort func(int, int)
@@ -62,13 +66,16 @@ func quicksort[T any](arr *[]T, cmpVal func(T, T) int) {
         l, r := s, t-1
         for i:=s; i<r; i++ {
             if cmp(i, r) < 0 {
-                ar[l], ar[i] = ar[i], ar[l]
+                arr[l], arr[i] = arr[i], arr[l]
                 l++
             }
         }
-        ar[l], ar[r] = ar[r], ar[l]
+        arr[l], arr[r] = arr[r], arr[l]
         sort(s, l)
         sort(l+1, t)
     }
+    sort(0, len(arr))
+
+    return arr
 }
 
