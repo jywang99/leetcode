@@ -28,5 +28,48 @@ func canJump(nums []int) bool {
 
 // 45. Jump Game II
 func jump(nums []int) int {
+    d := 0
+    l, r := 0, 0
+
+    for r < len(nums)-1 {
+        far := 0
+        for i:=l; i<r+1; i++ {
+            far = max(far, i + nums[i])
+        }
+        l = r + 1
+        r = far
+        d += 1
+    }
+
+    return d
+}
+
+// 134. Gas Station
+func canCompleteCircuit(gas []int, cost []int) int {
+    sum := func(a []int) int {
+        s := 0
+        for _, v := range a {
+            s += v
+        }
+        return s
+    }
+
+    if sum(gas) < sum(cost) {
+        return -1
+    }
+
+    total := 0
+    start := 0
+    for i := range gas {
+        total += gas[i] - cost[i]
+
+        // dipped below zero, start over
+        if total < 0 {
+            total = 0
+            start = i + 1
+        }
+    }
+
+    return start
 }
 
