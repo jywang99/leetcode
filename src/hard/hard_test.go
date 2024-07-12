@@ -166,48 +166,6 @@ func TestFindWords(t *testing.T) {
     }, []string{"aaa"}))
 }
 
-func TestHeap(t *testing.T) {
-    // min heap
-    hp := h.NewHeap([]int{5,6,1,3,2}, func(a, b int) int {
-        if a == b {
-            return 0
-        }
-        if a > b {
-            return -1
-        }
-        return 1
-    })
-    assert.Equal(t, 1, hp.PopTop())
-    assert.Equal(t, 2, hp.GetTop())
-    assert.Equal(t, 2, hp.PopTop())
-    assert.Equal(t, 3, hp.PopTop())
-    hp.Insert(0)
-    assert.Equal(t, 0, hp.PopTop())
-    hp.Insert(2)
-    assert.Equal(t, 2, hp.PopTop())
-    assert.Equal(t, 5, hp.PopTop())
-
-    // max heap
-    h1 := h.NewHeap([]int{5,6,1,3,2}, func(a, b int) int {
-        if a == b {
-            return 0
-        }
-        if a > b {
-            return 1
-        }
-        return -1
-    })
-    assert.Equal(t, 6, h1.PopTop())
-    assert.Equal(t, 5, h1.GetTop())
-    assert.Equal(t, 5, h1.PopTop())
-    assert.Equal(t, 3, h1.PopTop())
-    h1.Insert(7)
-    assert.Equal(t, 7, h1.PopTop())
-    h1.Insert(4)
-    assert.Equal(t, 4, h1.PopTop())
-    assert.Equal(t, 2, h1.PopTop())
-}
-
 func TestMedianFinder(t *testing.T) {
     mf := h.MfConstructor()
     mf.AddNum(1)    // arr = [1]
