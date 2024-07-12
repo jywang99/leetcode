@@ -1,5 +1,7 @@
 package medium
 
+import com "jy.org/leetcode/src/common"
+
 // 57. Insert Interval
 func Insert(intervals [][]int, newInterval []int) [][]int {
     rs := make([][]int, 0)
@@ -27,7 +29,7 @@ func Insert(intervals [][]int, newInterval []int) [][]int {
 func Merge(intervals [][]int) [][]int {
     rs := make([][]int, 0)
 
-    Quicksort(&intervals, func(a, b []int) int {
+    intervals = com.Quicksort(intervals, func(a, b []int) int {
         return a[0] - b[0]
     })
 
@@ -50,38 +52,9 @@ func Merge(intervals [][]int) [][]int {
     return rs
 }
 
-func Quicksort[T any](arr *[]T, cmpVal func(T, T) int) {
-    ar := *arr
-    cmp := func(i, j int) int {
-        return cmpVal(ar[i], ar[j])
-    }
-
-    var sort func(int, int)
-    sort = func(s, t int) {
-        if t - s < 2 {
-            return
-        }
-
-        l := s
-        r := t - 1 // pivot
-        for i:=s; i<r; i++ {
-            if cmp(i, r) < 0 {
-                ar[l], ar[i] = ar[i], ar[l]
-                l++
-            }
-        }
-
-        ar[l], ar[r] = ar[r], ar[l]
-        sort(s, l)
-        sort(l+1, t)
-    }
-
-    sort(0, len(ar))
-}
-
 // 435. Non-overlapping Intervals
 func eraseOverlapIntervals(intervals [][]int) int {
-    Quicksort(&intervals, func(a, b []int) int {
+    intervals = com.Quicksort(intervals, func(a, b []int) int {
         return a[0] - b[0]
     })
 
@@ -115,7 +88,7 @@ func MinMeetingRooms(intervals [][]int) int {
         start[s] = true
         start[e] = false
     }
-    Quicksort(&times, func(a, b int) int {
+    times = com.Quicksort(times, func(a, b int) int {
         return a - b
     })
 

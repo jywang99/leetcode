@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	com "jy.org/leetcode/src/common"
 	m "jy.org/leetcode/src/medium"
 )
 
@@ -19,7 +20,7 @@ func TestMerge(t *testing.T) {
 
 func TestQuicksort(t *testing.T) {
     arr := []int{4,5,2,1,3,6}
-    m.Quicksort(&arr, func(i1, i2 int) int {
+    arr = com.Quicksort(arr, func(i1, i2 int) int {
         return i1 - i2
     })
     assert.Equal(t, []int{1,2,3,4,5,6}, arr)
