@@ -137,3 +137,66 @@ func IsNStraightHand(hand []int, groupSize int) bool {
     return true
 }
 
+// 1899. Merge Triplets to Form Target Triplet
+func MergeTriplets(triplets [][]int, target []int) bool {
+    resolved := make(map[int]bool)
+    for _, trip := range triplets {
+        // matches are only updated to resolved if not useless
+        useless := false
+        match := make(map[int]bool)
+        for j, v := range trip {
+            // if triplet contains a column > target, skip it
+            if v > target[j] {
+                useless = true
+                break
+            }
+            // don't care about already resolved column
+            if resolved[j] {
+                continue
+            }
+            if v == target[j] {
+                match[j] = true
+            }
+        }
+        // if valid triplet, update resolve status
+        if !useless {
+            for k, v := range match {
+                resolved[k] = v
+            }
+            // all columns matched, done
+            if len(resolved) == 3 {
+                return true
+            }
+        }
+    }
+    // finished looping through all triplets but still have unresolved columns
+    return false
+}
+
+// 763. Partition Labels
+func PartitionLabels(s string) []int {
+    sb := []byte(s)
+
+    // get last position of all characters
+    last := make(map[byte]int)
+    for i, c := range sb {
+        last[c] = i
+    }
+
+    // partition
+    parts := make([]int, 0)
+    size := 0
+    stop := 0
+    for i, c := range sb {
+        size ++
+        stop = max(stop, last[c])
+
+        // end partition
+        if i == stop {
+            parts = append(parts, size)
+            size = 0
+        }
+    }
+
+    return parts
+}
