@@ -200,3 +200,35 @@ func PartitionLabels(s string) []int {
 
     return parts
 }
+
+// 678. Valid Parenthesis String
+func CheckValidString(s string) bool {
+    minLeft, maxLeft := 0, 0
+
+    for _, c := range s {
+        switch c {
+        case '(':
+            minLeft ++
+            maxLeft ++
+        case ')':
+            minLeft --
+            maxLeft --
+        default:
+            minLeft --
+            maxLeft ++
+        }
+
+        if maxLeft < 0 {
+            return false
+        }
+        if minLeft < 0 {
+            minLeft = 0
+        }
+    }
+
+    return minLeft == 0
+}
+
+// 78. Subsets
+func Subsets(nums []int) [][]int {
+}
