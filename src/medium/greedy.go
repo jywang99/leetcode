@@ -229,6 +229,3 @@ func CheckValidString(s string) bool {
     return minLeft == 0
 }
 
-// 78. Subsets
-func Subsets(nums []int) [][]int {
-}
